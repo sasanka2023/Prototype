@@ -1,3 +1,7 @@
 this is the second file
+<<<<<<< HEAD
 
 nipuni - this will be a conflict
+=======
+sasanka - conflict
+>>>>>>> 18180ab797a94a3a28c69891e05917d9bd383c92
