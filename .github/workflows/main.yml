@@ -20,9 +20,11 @@ jobs:
          java-version: 17
 
      - name: Unit Tests
+       working-directory: ./CarrerLink(1)
        run: mvn -B test --file pom.xml
 
      - name: Build the application
+       working-directory: ./CarrerLink(1)
        run: |
          mvn clean 
          mvn -B package --file pom.xml
