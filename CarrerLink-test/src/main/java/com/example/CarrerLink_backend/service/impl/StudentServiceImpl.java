@@ -137,7 +137,7 @@ public class StudentServiceImpl implements StudentService {
 
         studentRepo.save(student);
 
-        return "Student with ID: " + studentId + " applied for job with ID: " + jobId;
+       // return "Student with ID: " + studentId + " applied for job with ID: " + jobId;
     }
 
     @Override
