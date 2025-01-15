@@ -27,6 +27,8 @@ jobs:
         java-version: '17'
         distribution: 'temurin'
         cache: maven
+    - name: Navigate to project directory
+      run: cd CarrerLink(1)
     - name: Build with Maven
       run: mvn clean install
 
