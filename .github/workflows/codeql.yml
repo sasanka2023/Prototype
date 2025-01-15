@@ -1,0 +1,60 @@
+name: "CodeQL Analysis for Java Spring Boot"
+
+on:
+  push:
+    branches: [ "main", "develop" ] # Adjust branches as per your project setup
+  pull_request:
+    branches: [ "main", "develop" ]
+  schedule:
+    - cron: '35 0 * * 5' # Weekly scan
+
+jobs:
+  analyze:
+    name: CodeQL Analyze for Java
+    runs-on: ubuntu-latest
+    permissions:
+      security-events: write
+      actions: read
+      contents: read
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ java ]
+        build-mode: manual # For Spring Boot applications, we need a manual build process
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up JDK 17
+      uses: actions/setup-java@v4
+      with:
+        java-version: 17
+        distribution: temurin
+
+    - name: Cache Maven dependencies
+      uses: actions/cache@v3
+      with:
+        path: ~/.m2/repository
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        restore-keys: |
+          ${{ runner.os }}-maven-
+
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+        build-mode: ${{ matrix.build-mode }}
+        # Include security and quality queries for better analysis
+        queries: +security-extended,security-and-quality
+
+    - name: Build project
+      run: mvn clean install -DskipTests
+      # Adjust the working directory if your Spring Boot app is in a subdirectory
+      working-directory: . 
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{ matrix.language }}"
